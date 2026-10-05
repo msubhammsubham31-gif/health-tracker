@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Daily Health Tracker"
+description = "A private daily check-in for tracking sleep, mood, energy, hydration, activity, and personal notes, with an at-a-glance weekly overview and a history of saved entries."
+version = "1.0.0"
+id = "artifacts/daily-health-tracker"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23021
+
+[services.development]
+run = "pnpm --filter @workspace/daily-health-tracker run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/daily-health-tracker", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/daily-health-tracker/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23021"
+BASE_PATH = "/"
